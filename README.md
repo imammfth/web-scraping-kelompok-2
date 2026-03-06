@@ -1,6 +1,6 @@
 # scraping Berita (PyQt6 + Selenium)
 
-Aplikasi meja kerja berbasis Python yang dibuat untuk mengotomatiskan proses mengambil artikel berita dari internet. **Pemahaman:**
+Aplikasi scraping data berbasis Python yang dibuat untuk mengotomatiskan proses mengambil artikel berita dari internet. **Pemahaman:**
 
 Aplikasi ini menyediakan kemudahan untuk mengumpulkan data berita dari berbagai sumber berita dan mampu mengekspor data tersebut ke dalam format Excel (.xlsx).
 
