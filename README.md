@@ -24,28 +24,34 @@ Data yang telah dikumpulkan langsung diubah menjadi format Excel dan disimpan da
 ![Image](https://github.com/user-attachments/assets/cae23dd3-a5ef-47d0-b97b-434b1ec29694)
 
 **Detail Antarmuka:**
-Kolom untuk memasukkan tautan pencarian berita target.
-2. **Input Halaman:** *Spinbox* untuk menentukan jumlah maksimal halaman yang ingin di-*scrape*, yaitu antara 1 hingga 20 halaman.
-Tombol hijau besar untuk memulai proses scraping. Tombol ini akan tidak bisa digunakan (*disabled*) selama proses sedang berlangsung agar mencegah klik dua kali (*double-click*).
-Area layar berwarna gelap yang menampilkan proses dan status bot secara real-time.
+Penjelasan Komponen Antarmuka:
+
+1. **Link Utama Berita:** Kolom input URL utama untuk memasukkan tautan berita atau halaman pencarian yang ingin diekstrak datanya 
+2. **Filter Tanggal:** Fitur pemilihan tanggal memungkinkan pengguna untuk memilah berita yang diambil berdasarkan rentang waktu tertentu.
+3. **Halaman:** Input angka untuk membatasi jumlah halaman yang akan di scraping.
+4. **Progress Bar:** Indikator di bawah filter yang menampilkan persentase progres secara visual (0% hingga 100%), sehingga user tau sejauh mana proses berjalan.
+5. **Tombol actionnya:**
+   * **Mulai Scraping_Filter:** Tombol untuk mengeksekusi bot. Tombol ini otomatis tidak aktif selama proses berjalan untuk mencegah penumpukan perintah.
+   * **Export ke Excel:** Tombol yang baru akan aktif setelah proses scraping selesai, berfungsi untuk menyimpan data yang ada di tabel ke dalam format file `.xlsx`.
+6. **Tabel Data (Preview):** Area tabel interaktif yang langsung menampilkan hasil ekstraksi berita ke dalam empat kolom: **Tanggal**, **Judul**, **Isi Berita**, dan **Link**. Pengguna dapat melihat hasilnya terlebih dahulu sebelum mengekspornya.
+7. **Activity Log:** Kotak terminal di bagian bawah yang memberikan pembaruan status secara langsung (misalnya: `"Memproses Halaman 1..."`), memudahkan pelacakan jika terjadi *error*.
 
 ---
 
 ## Prasyarat (Prerequisites)
 
-Sebelum menggunakan aplikasi ini, pastikan Anda sudah menginstal:
+Sebelum menggunakan aplikasi ini, pastikan sudah menginstal:
 * **Python 3.8+**
-Penggunaan Selenium hanya didukung oleh browser Microsoft Edge.
-*Library Python yang diperlukan (lihat bagian instalasi)*.
+Penggunaan Selenium hanya bisa diakses menggunakan browser Microsoft Edge.
 
 ## Panduan Penggunaan
-Jalankan aplikasi utama melalui terminal atau command prompt:
+Jalankan aplikasi utama melalui terminal:
 
 python main_ui.py
 
-Setelah jendela aplikasi terbuka, masukkan Link Berita dari hasil pencarian (misalnya: https://www.detik.com/search/searchall?query=kecerdasan+buatan).
+Setelah aplikasi terbuka, masukkan Link Berita dari hasil pencarian
 
-Tentukan jumlah halaman yang ingin di-scrape melalui kolom "Berapa Halaman".
+Tentukan jumlah halaman yang ingin di scraping lewat kolom "Berapa Halaman".
 
 Klik tombol "MULAI SCRAPING KE EXCEL".
 
