@@ -18,9 +18,10 @@ Data yang telah dikumpulkan langsung diubah menjadi format Excel dan disimpan da
 
 ## 📸 Preview Tampilan
 
-(Ganti link gambar di bawah ini dengan screenshot aplikasi Anda yang sudah diunggah ke folder repositori, misalnya di folder `/assets/ui_preview.png`)
-
-![Screenshot Antarmuka AI News Scraper](link-gambar-screenshot-anda-disini.png)
+![Image](https://github.com/user-attachments/assets/406ebe38-00d2-4160-a163-dd0c3a798b6f)
+![Image](https://github.com/user-attachments/assets/e309650c-ae55-4311-be3f-3470375b18ae)
+![Image](https://github.com/user-attachments/assets/eca0c6eb-8bb2-43a9-aeab-2fd581bb2fb1)
+![Image](https://github.com/user-attachments/assets/cae23dd3-a5ef-47d0-b97b-434b1ec29694)
 
 **Detail Antarmuka:**
 Kolom untuk memasukkan tautan pencarian berita target.
