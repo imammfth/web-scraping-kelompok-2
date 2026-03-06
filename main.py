@@ -1,7 +1,7 @@
 import sys
 from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QPushButton, 
                              QTableWidget, QTableWidgetItem, QLabel, QLineEdit, 
-                             QSpinBox, QHBoxLayout, QProgressBar, QDateEdit)
+                             QSpinBox, QHBoxLayout, QProgressBar, QDateEdit, QTextEdit)
 from PyQt6.QtCore import QDate
 from scraper_logic import ScraperWorker
 import pandas as pd
@@ -18,7 +18,7 @@ class NewsApp(QWidget):
 
         # Input URL
         layout.addWidget(QLabel("Link Utama Berita:"))
-        self.url_input = QLineEdit("https://www.detik.com/search/searchall?query=teknologi")
+        self.url_input = QLineEdit("Input URL pada baris ini!")
         layout.addWidget(self.url_input)
 
         # Filter Tanggal & Limit
@@ -54,6 +54,14 @@ class NewsApp(QWidget):
         self.table = QTableWidget(0, 4)
         self.table.setHorizontalHeaderLabels(["Tanggal", "Judul", "Isi Berita", "Link"])
         layout.addWidget(self.table)
+        
+        # Tabel Logg
+        self.log_output = QTextEdit()
+        self.log_output.setFixedHeight(100) 
+        self.log_output.setReadOnly(True)
+        self.log_output.setStyleSheet("background-color: #f0f0f0; color: #333; font-size: 10px;")
+        layout.addWidget(QLabel("Activity Log:"))
+        layout.addWidget(self.log_output)
 
         self.setLayout(layout)
         self.data_list = []
@@ -69,6 +77,7 @@ class NewsApp(QWidget):
         )
         self.worker.progress_signal.connect(self.progress.setValue)
         self.worker.finished_signal.connect(self.on_finished)
+        self.worker.log_signal.connect(self.log_output.append)
         self.worker.start()
 
     def on_finished(self, data, status):
