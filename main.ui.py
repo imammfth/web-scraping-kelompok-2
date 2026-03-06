@@ -1,35 +1,8 @@
-# main_ui.py
 import sys
 from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QPushButton, 
                              QTextEdit, QLabel, QLineEdit, QSpinBox, QHBoxLayout)
-from PyQt6.QtCore import QThread, pyqtSignal
-
-# Import kelas logika dari file yang sudah kita pisahkan
-from scraper_logic import NewsScraper
-
-class ScraperWorker(QThread):
-    finished_signal = pyqtSignal(str)
-    log_signal = pyqtSignal(str)
-
-    def __init__(self, target_url, max_pages):
-        super().__init__()
-        self.target_url = target_url
-        self.max_pages = max_pages
-
-    def run(self):
-        # Instansiasi objek scraper dan hubungkan callback ke pyqtSignal
-        scraper = NewsScraper(
-            target_url=self.target_url, 
-            max_pages=self.max_pages, 
-            log_callback=self.log_signal.emit
-        )
-        
-        try:
-            # Jalankan logika scraping
-            result_message = scraper.run_scraper()
-            self.finished_signal.emit(result_message)
-        except Exception as e:
-            self.finished_signal.emit(str(e))
+# Import logic dari file sebelah
+from scraper_logic import ScraperWorker
 
 class NewsApp(QWidget):
     def __init__(self):
@@ -37,46 +10,58 @@ class NewsApp(QWidget):
         self.initUI()
 
     def initUI(self):
-        self.setWindowTitle("AI News Scraper (Judul, Tanggal, Isi)")
+        self.setWindowTitle("Meta News Scraper - Modular Version")
         self.setGeometry(100, 100, 550, 450)
+        
         layout = QVBoxLayout()
 
-        layout.addWidget(QLabel("Link Berita (Contoh: Detik/Kompas/Google News):"))
+        # UI Elements
+        layout.addWidget(QLabel("Link Pencarian Berita:"))
         self.url_input = QLineEdit()
-        self.url_input.setText("https://www.detik.com/search/searchall?query=kecerdasan+buatan")
+        self.url_input.setText("https://www.detik.com/search/searchall?query=teknologi")
         layout.addWidget(self.url_input)
 
         h_layout = QHBoxLayout()
-        h_layout.addWidget(QLabel("Berapa Halaman:"))
+        h_layout.addWidget(QLabel("Jumlah Halaman:"))
         self.page_spin = QSpinBox()
-        self.page_spin.setRange(1, 20)
+        self.page_spin.setRange(1, 10)
         h_layout.addWidget(self.page_spin)
         layout.addLayout(h_layout)
 
-        self.btn = QPushButton("MULAI SCRAPING KE EXCEL")
+        self.btn = QPushButton("MULAI META SCRAPING")
         self.btn.setFixedHeight(45)
-        self.btn.setStyleSheet("background-color: #2ecc71; color: white; font-weight: bold; border-radius: 5px;")
+        self.btn.setStyleSheet("""
+            QPushButton { background-color: #3498db; color: white; font-weight: bold; border-radius: 5px; }
+            QPushButton:disabled { background-color: #95a5a6; }
+        """)
         self.btn.clicked.connect(self.start_scraping)
         layout.addWidget(self.btn)
 
         self.log = QTextEdit()
         self.log.setReadOnly(True)
-        self.log.setStyleSheet("background-color: #2c3e50; color: #ecf0f1; font-family: Consolas;")
+        self.log.setStyleSheet("background-color: #1e1e1e; color: #00ff00; font-family: Consolas;")
         layout.addWidget(self.log)
 
         self.setLayout(layout)
 
     def start_scraping(self):
+        url = self.url_input.text()
+        pages = self.page_spin.value()
+
+        if not url.startswith("http"):
+            self.log.append("⚠️ URL tidak valid!")
+            return
+
         self.btn.setEnabled(False)
         self.log.clear()
         
-        # Mulai thread agar UI tidak 'freeze' (Not Responding)
-        self.worker = ScraperWorker(self.url_input.text(), self.page_spin.value())
-        self.worker.log_signal.connect(lambda m: self.log.append(m))
-        self.worker.finished_signal.connect(self.done)
+        # Memanggil Worker dari file scraper_logic
+        self.worker = ScraperWorker(url, pages)
+        self.worker.log_signal.connect(self.log.append)
+        self.worker.finished_signal.connect(self.on_finished)
         self.worker.start()
 
-    def done(self, msg):
+    def on_finished(self, msg):
         self.log.append(msg)
         self.btn.setEnabled(True)
 
